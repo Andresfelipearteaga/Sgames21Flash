@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import { checkConnection } from './config/db';
+import userRoutes from './routes/user.routes';
 
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
 
+app.use('/api/user', userRoutes);
 
 checkConnection().then(() => {
 app.listen(PORT, () => { 

@@ -1,9 +1,10 @@
 import React from 'react';
-import { CheckCircle, BookOpen, Table, Tags, FileText, Lock } from 'lucide-react';  // Usa estos íconos o los que prefieras
-
-const SidebarInfo = ({ SelectedKey }) => {
+import { BookOpen, Table, Tags, FileText, Lock, Info } from 'lucide-react';  // Usa estos íconos o los que prefieras
+import { Tooltip } from 'react-tooltip';
+const SidebarInfo = ({ SelectedKey, agentEvent }) => {
     const handleItemClick = (key) => {
       console.log(key);
+      agentEvent(key)
     };
   const renderContent = () => {
     if (SelectedKey === null) {
@@ -59,17 +60,30 @@ const SidebarInfo = ({ SelectedKey }) => {
   };
 
   return (
-    <div className="w-full h-full rounded p-4 space-y-8 transition-all duration-500 ease-in-out bg-gray-800">
-      <div className='flex items-center justify-center'>
-        <span className='text-white font-semibold text-xl'> {SelectedKey} </span>
-      </div>
+    <div className="relative w-full h-full rounded p-4 space-y-8 transition-all duration-500 ease-in-out bg-gray-800">
+    {/* Contenedor del título con tooltip */}
+    <div className="flex items-center justify-center relative">
+      <span className="text-white font-semibold text-xl">{SelectedKey}</span>
+      
+      {/* Ícono de información con Tooltip */}
+      {SelectedKey !== null && (
+        <>
+              <Info
+        className="w-5 h-5 text-white ml-2 cursor-pointer"
+        data-tooltip-id="info-tooltip"
+      />
+      <Tooltip id="info-tooltip" place="top" effect="solid">
+        Haz click en cada opción para decirle a tu agente que te explique cada tipo de {SelectedKey}
+      </Tooltip>
+        </>
 
-      {/* Aquí se muestra la sección dinámica según el SelectedKey */}
-      <div className="space-y-4">
-        {renderContent()}
-      </div>
 
+      )}
     </div>
+
+    {/* Contenido dinámico */}
+    <div className="space-y-4">{renderContent()}</div>
+  </div>
   );
 };
 
