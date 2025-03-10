@@ -3,6 +3,7 @@ import { Meta } from "../../interfaces/meta.interface";
 
 export class UserService {
   static async register(fullname: string, institution: string, username: string, password: string): Promise<Meta> {
+    console.log(fullname, institution, username, password);
     if (!fullname || !institution || !username || !password) {
       throw new Error("Todos los campos son obligatorios");
     }

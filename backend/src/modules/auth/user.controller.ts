@@ -4,7 +4,6 @@ import { UserService } from "./user.service";
 export class UserController {
   static async register(req: Request, res: Response) {
     const { fullname, institution, username, password } = req.body;
-
     try {
       const response = await UserService.register(fullname, institution, username, password);
       res.status(201).json(response);

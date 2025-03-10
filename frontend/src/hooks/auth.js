@@ -3,6 +3,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 const useAuth = () => {
 
+    const [confirmPassword, setConfirmPassword] = useState("");
+
     // Objeto para datos de registro
     const [registerData, setRegisterData] = useState({
         fullName: '',
@@ -43,57 +45,96 @@ const useAuth = () => {
 
 
 
-// Login
-const login = async () => {
-    // Validación de campos vacíos
-    if (loginData.username.trim() === '' || loginData.password.trim() === '') {
-        toast.error('El nombre de usuario y la contraseña son obligatorios');
-        return;
-    }
-
-    try {
-        const response = await axios.post('http://localhost:5000/api/user/login', {
-            username: loginData.username,
-            password: loginData.password,
-        });
-
-        if (response.data.success) {
-            toast.success('Inicio de sesión exitoso');
-            // Aquí puedes guardar token o redirigir
-        } else {
-            // Si tu backend manda success: false con algún mensaje (en caso de error controlado)
-            toast.error(response.data.message || 'Error al iniciar sesión');
+    // Login
+    const login = async () => {
+        // Validación de campos vacíos
+        if (loginData.username.trim() === '' || loginData.password.trim() === '') {
+            toast.error('El nombre de usuario y la contraseña son obligatorios');
+            return;
         }
-    } catch (error) {
-        const errorMessage = error.response?.data?.message || 'Error en el servidor';
-        toast.error(errorMessage);
-        console.error('Error en login', error);
-    }
-};
 
+        try {
+            const response = await axios.post('http://localhost:5000/api/user/login', {
+                username: loginData.username,
+                password: loginData.password,
+            });
+
+            if (response.data.success) {
+                toast.success('Inicio de sesión exitoso');
+                // Aquí puedes guardar token o redirigir
+            } else {
+                // Si tu backend manda success: false con algún mensaje (en caso de error controlado)
+                toast.error(response.data.message || 'Error al iniciar sesión');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || 'Error en el servidor';
+            toast.error(errorMessage);
+            console.error('Error en login', error);
+        }
+    };
+
+    // Validación de registro
+    const isRegisterDataValid = () => {
+        const { fullName, institution, username, password } = registerData;
+
+        if (!fullName.trim() || !institution.trim() || !username.trim() || !password.trim()) {
+            toast.error("Todos los campos son obligatorios.");
+            return false;
+        }
+
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            toast.error("El nombre de usuario solo puede contener letras, números y guiones bajos.");
+            return false;
+        }
+
+        if (password.length < 8) {
+            toast.error("La contraseña debe tener al menos 8 caracteres");
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            toast.error("Las contraseñas no coinciden.");
+            return false;
+        }
+
+        return true;
+    };
+    const checkPasswordMatch = () =>  {
+        if (registerData.password.trim() !== '') {
+        confirmPassword === registerData.password;
+        }}
 
     // Registro
     const register = async () => {
+        if (!isRegisterDataValid()) return;
+
         try {
-            const response = await axios.post('http://localhost:5000/api/register', {
-                fullName: registerData.fullName,
+            const response = await axios.post('http://localhost:5000/api/user/register', {
+                fullname: registerData.fullName,
                 institution: registerData.institution,
                 username: registerData.username,
                 password: registerData.password,
             });
             console.log(response);
-            alert('Registro exitoso');
-            setView('login');
+            if (response.data.success) {
+                toast.success('Registro exitoso');
+                setView('login');
+                setRegisterData({ ...registerData, fullName: '', institution: '', username: '', password: '' });
+                setConfirmPassword('');
+            } else {
+                toast.error(response.data.message || 'Error en el registro');
+            }
+    
         } catch (error) {
-            showModalError('Error al registrar el usuario. Inténtalo más tarde.');
+            const errorMessage = error.response?.data?.message || 'Error en el servidor';
+            toast.error(errorMessage);
             console.error('Error en register', error);
         }
     };
 
     const checkPassword = (e) => {
-        if (registerData.password !== e.target.value) {
-            showModalError('Las contraseñas no coinciden.');
-        }
+        const password = e.target.value;
+        setConfirmPassword(password);
     };
 
     // Buscar usuario para recuperación de contraseña
@@ -155,7 +196,9 @@ const login = async () => {
         register,
         checkUserExists,
         changePassword,
-        checkPassword
+        checkPassword,
+        setConfirmPassword,
+        checkPasswordMatch
     };
 };
 
