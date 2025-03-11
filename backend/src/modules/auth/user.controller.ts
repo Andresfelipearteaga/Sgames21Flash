@@ -36,6 +36,8 @@ export class UserController {
   // Cambiar contraseña por ID de usuario
   static async updatePassword(req: Request, res: Response) {
     const { id_usuario, newPassword } = req.body;
+    console.log(id_usuario, newPassword)
+
     console.log(id_usuario, newPassword);
     try {
       const response = await UserService.updatePassword(id_usuario, newPassword);

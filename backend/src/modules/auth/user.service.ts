@@ -37,19 +37,19 @@ export class UserService {
         data: { id_usuario: user.id_usuario },
       };
     } catch (error: any) {
-      throw new Error("Error en el login: " + error.message);
+      throw new Error(error.message);
     }
   }
 
   static async checkUserExists(username: string): Promise<Meta> {
     if (!username) {
-      throw new Error("El username es obligatorio");
+      throw new Error("El nombre de usuario es obligatorio");
     }
 
     try {
       const user = await UserRepository.findUserByUsername(username);
       return {
-        success: true,
+        success: user ? true : false,
         message: user ? "El usuario existe" : "El usuario no existe",
         data: { ...user },
       };

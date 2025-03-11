@@ -2,15 +2,10 @@ import { User, Lock, ArrowLeft } from "lucide-react";
 import { InputField } from "../common/inputFieldAuth";
 import { PrimaryButton } from "../common/primaryButton";
   // Vista de Recuperar Contraseña - Buscar Cuenta
-export const RecoverView = ( { setView, setRecoverData, recoverData } ) => {
+export const RecoverView = ( { setView, setRecoverData, recoverData, checkUserExists } ) => {
 
     return (
-
     <div
-      key="recover"
-      initial="hidden"
-      animate="visible"
-      exit="exit"
       className="w-full max-w-md"
     >
  <div className="flex items-center mb-8">
@@ -37,7 +32,7 @@ export const RecoverView = ( { setView, setRecoverData, recoverData } ) => {
         <InputField
           icon={User}
           type="text"
-          placeholder="Nombre de usuario o email"
+          placeholder="Nombre de usuario"
           value={recoverData.username}
           onChange={(e) => {
             setRecoverData({ ...recoverData, username: e.target.value });
@@ -45,7 +40,7 @@ export const RecoverView = ( { setView, setRecoverData, recoverData } ) => {
         />
 
         <div className="mt-6">
-          <PrimaryButton onClick={() => setView("resetPassword")}>
+          <PrimaryButton onClick={checkUserExists}>
             Buscar Cuenta
           </PrimaryButton>
         </div>    </div>

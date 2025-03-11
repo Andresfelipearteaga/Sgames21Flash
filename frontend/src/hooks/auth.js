@@ -24,25 +24,11 @@ const useAuth = () => {
         username: '',
         password: '',
         confirmPassword: '',
-        resetToken: ''
+        userId: ''
     });
 
     // Control de vista
     const [view, setView] = useState('login');
-
-    // Modal de error
-    const [modalError, setModalError] = useState({ show: false, message: '' });
-
-    // Mostrar modal de error
-    const showModalError = (message) => {
-        setModalError({ show: true, message });
-    };
-
-    // Ocultar modal de error
-    const hideModalError = () => {
-        setModalError({ show: false, message: '' });
-    };
-
 
 
     // Login
@@ -61,6 +47,10 @@ const useAuth = () => {
 
             if (response.data.success) {
                 toast.success('Inicio de sesión exitoso');
+                setLoginData({...loginData,
+                    username: '',
+                    password: ''
+                })
                 // Aquí puedes guardar token o redirigir
             } else {
                 // Si tu backend manda success: false con algún mensaje (en caso de error controlado)
@@ -99,6 +89,25 @@ const useAuth = () => {
 
         return true;
     };
+
+        // Validación de registro
+        const isChangePasswordDataValid = () => {
+            const { password, confirmPassword } = recoverData;
+    
+            if (password.length < 8) {
+                toast.error("La contraseña debe tener al menos 8 caracteres");
+                return false;
+            }
+    
+            if (password !== confirmPassword) {
+                toast.error("Las contraseñas no coinciden.");
+                return false;
+            }
+    
+            return true;
+        };
+
+
     const checkPasswordMatch = () =>  {
         if (registerData.password.trim() !== '') {
         confirmPassword === registerData.password;
@@ -140,45 +149,48 @@ const useAuth = () => {
     // Buscar usuario para recuperación de contraseña
     const checkUserExists = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/api/checkUser', { 
+            const response = await axios.post('http://localhost:5000/api/user/check-user', { 
                 username: recoverData.username 
             });
-
-            if (response.data.exists) {
-                setRecoverData(prev => ({
-                    ...prev,
-                    resetToken: response.data.resetToken // Asumiendo que el backend lo devuelve
-                }));
+            if (response.data.success) {
+                setRecoverData(prev => ({ ...prev, userId: response.data.data.id_usuario })); 
+                console.log(response.data);
+                toast.success('Usuario encontrado');
                 setView('resetPassword');
             } else {
-                showModalError('El usuario no existe. Por favor verifica el nombre de usuario.');
+                toast.error('El usuario no existe. Por favor verifica el nombre de usuario.');
             }
         } catch (error) {
-            showModalError('Error al buscar la cuenta. Inténtalo más tarde.');
-            console.error('Error en checkUserExists', error);
+            const errorMessage = error.response?.data?.message || 'Error en el servidor';
+            toast.error(errorMessage);
+            console.error('Error en register', error);
         }
     };
 
     // Cambiar contraseña
     const changePassword = async () => {
-        if (recoverData.password !== recoverData.confirmPassword) {
-            showModalError('Las contraseñas no coinciden.');
-            return;
-        }
-
+        if (!isChangePasswordDataValid()) return;
+        console.log(recoverData);
         try {
-            await axios.post('http://localhost:5000/api/resetPassword', {
-                username: recoverData.username,
+            const response = await axios.put('http://localhost:5000/api/user/update-password', {
                 newPassword: recoverData.password,
-                token: recoverData.resetToken
+                id_usuario: recoverData.userId
             });
+            console.log(response);
+            if (response.data.success) {
+                toast.success('Contraseña cambiada con éxito');
+                setView('login');
+                setRecoverData( 
+                    {...recoverData, password: '', confirmPassword: '', userId: '', username: ''}
+                 )
+            } else {
+                toast.error(response.data.message || 'Error al cambiar la contraseña');
+            }
 
-            alert('¡Contraseña cambiada con éxito!');
-            setView('login');
         } catch (error) {
-            showModalError('Error al cambiar la contraseña. Inténtalo más tarde.');
-            console.error('Error en changePassword', error);
-        }
+            const errorMessage = error.response?.data?.message || 'Error en el servidor';
+            toast.error(errorMessage);
+            console.error('Error en register', error);        }
     };
 
     return {
@@ -190,8 +202,6 @@ const useAuth = () => {
         setRecoverData,
         view,
         setView,
-        modalError,
-        hideModalError,
         login,
         register,
         checkUserExists,

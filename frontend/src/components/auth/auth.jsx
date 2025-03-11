@@ -8,12 +8,7 @@ import { ResetPasswordView } from "./resetPasswordView";
 
 const AuthSystem = () => {
 
-  const { view, setRecoverData, recoverData, checkPasswordRecovery, setView, register, login, setLoginData, loginData, registerData, setRegisterData, setConfirmPassword, checkPasswordMatch, confirmPassword  } = useAuth();
-
-
- 
- 
-
+  const { view, setRecoverData, recoverData, checkPasswordRecovery, setView, register, login, setLoginData, loginData, registerData, setRegisterData, setConfirmPassword, checkPasswordMatch, confirmPassword, checkUserExists, changePassword  } = useAuth();
 
 
 
@@ -25,9 +20,9 @@ const AuthSystem = () => {
       case "register":
         return <RegisterView setView={setView} setRegisterData={setRegisterData} registerData={registerData} register={register} confirmPassword={confirmPassword} setConfirmPassword={setConfirmPassword} checkPasswordMatch={checkPasswordMatch}  />;
       case "recover":
-        return <RecoverView  setView={setView} setRecoverData={setRecoverData} recoverData={recoverData}/>;
+        return <RecoverView  setView={setView} setRecoverData={setRecoverData} recoverData={recoverData} checkUserExists={checkUserExists}/>;
       case "resetPassword":
-        return <ResetPasswordView setView={setView} setRecoverData={setRecoverData} recoverData={recoverData} checkPasswordRecovery={checkPasswordRecovery}/>;
+        return <ResetPasswordView setView={setView} setRecoverData={setRecoverData} recoverData={recoverData} checkPasswordRecovery={checkPasswordRecovery} changePassword={changePassword} />;
       default:
         return <LoginView />;
     }

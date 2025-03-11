@@ -1,17 +1,13 @@
 
 import { Lock, ArrowLeft } from "lucide-react";
-import { InputField } from "../common/inputFieldAuth";
+import { InputFieldPassword } from "../common/inpudFieldPassword";
 import { PrimaryButton } from "../common/primaryButton";
 
   // Vista de Restablecer Contraseña
-export const ResetPasswordView = ( { setView, setRecoverData, recoverData, checkPasswordRecovery } ) => {
+export const ResetPasswordView = ( { setView, setRecoverData, recoverData, changePassword } ) => {
 
     return (
     <div
-      key="resetPassword"
-      initial="hidden"
-      animate="visible"
-      exit="exit"
       className="w-full max-w-md"
     >
       <div className="flex items-center mb-8">
@@ -30,33 +26,30 @@ export const ResetPasswordView = ( { setView, setRecoverData, recoverData, check
         </div>
       </div>
 
-      <form className="space-y-4">
+      <form className="space-y-4"  onSubmit={(e) => {
+    e.preventDefault(); 
+    changePassword();
+  }}>
         <p className="text-white text-sm mb-4">
           Crea una nueva contraseña segura que no uses en otros sitios.
         </p>
 
-        <InputField
+        <InputFieldPassword
           icon={Lock}
-          type="password"
           placeholder="Nueva contraseña"
-          value=""
+          value={recoverData.password}
           onChange={(e) => { setRecoverData({ ...recoverData, password: e.target.value }); }}
         />
 
-        <InputField
+        <InputFieldPassword
           icon={Lock}
-          type="password"
           placeholder="Confirmar nueva contraseña"
-          value=""
-          onChange={checkPasswordRecovery}
+          value={recoverData.confirmPassword}
+          onChange={(e) => { setRecoverData({ ...recoverData, confirmPassword: e.target.value }); }}
         />
 
         <div className="mt-6">
-          <PrimaryButton
-            onClick={() => {
-              alert("¡Contraseña cambiada con éxito!");
-              setView("login");
-            }}
+          <PrimaryButton type={"submit"}
           >
             Cambiar Contraseña
           </PrimaryButton>
