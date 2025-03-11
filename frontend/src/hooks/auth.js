@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const useAuth = () => {
-
+    const navigate = useNavigate();
     const [confirmPassword, setConfirmPassword] = useState("");
 
     // Objeto para datos de registro
@@ -43,7 +44,8 @@ const useAuth = () => {
             const response = await axios.post('http://localhost:5000/api/user/login', {
                 username: loginData.username,
                 password: loginData.password,
-            });
+            }, { withCredentials: true }
+        );
 
             if (response.data.success) {
                 toast.success('Inicio de sesión exitoso');
@@ -52,6 +54,7 @@ const useAuth = () => {
                     password: ''
                 })
                 // Aquí puedes guardar token o redirigir
+                navigate('/app/inicio');
             } else {
                 // Si tu backend manda success: false con algún mensaje (en caso de error controlado)
                 toast.error(response.data.message || 'Error al iniciar sesión');

@@ -20,7 +20,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
         {sidebarOpen && (
           <button 
             onClick={() => setSidebarOpen(false)}
-            className="p-1 rounded-md hover:bg-gray-600"
+            className="p-1 rounded-md hover:bg-gray-600 cursor-pointer"
           >
             <X size={20} className="text-white" />
           </button>
@@ -31,7 +31,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
       <nav className="flex flex-col justify-between h-full py-6">
         <div className="space-y-2 px-3">
           <NavLink 
-            to="/dashboard" 
+            to="/app/inicio" 
             onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => 
               `flex items-center px-3 py-2 text-white rounded-md group transition-colors ${
@@ -44,7 +44,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
           </NavLink>
 
           <NavLink 
-            to="/perfil" 
+            to="/app/perfil" 
             onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => 
               `flex items-center px-3 py-2 text-white rounded-md group transition-colors ${
@@ -57,7 +57,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
           </NavLink>
 
           <NavLink 
-            to="/logout" 
+            to="/app/logout" 
             onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => 
               `flex items-center px-3 py-2 text-white rounded-md group transition-colors ${

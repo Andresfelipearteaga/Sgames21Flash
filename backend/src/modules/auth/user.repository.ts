@@ -14,7 +14,7 @@ export class UserRepository {
     }
   }
   static async loginUser(username: string, password: string) {
-    const query = `SELECT id_usuario FROM usuario WHERE nombre_usuario = $1 AND contraseña = $2`;
+    const query = `SELECT id_usuario, nombre_completo, institucion, nombre_usuario FROM usuario WHERE nombre_usuario = $1 AND contraseña = $2`;
     const values = [username, password];
 
     const client = await pool.connect();

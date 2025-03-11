@@ -1,9 +1,10 @@
 import { Menu } from "lucide-react";
-import SideBar from "../components/home/sideBar";
 import fondoHeader from "../assets/fondoHeader.jpg";
 import Modules from "../components/home/modules";
+import { useUser } from "../contexts/userContext.jsx";
 
 const Dashboard = () => {
+    const { user } = useUser();
     return (
         <div className="flex min-h-screen bg-gray-100">
             {/* Sidebar */}
@@ -28,7 +29,7 @@ const Dashboard = () => {
                     <div className="relative flex items-center px-6 h-full">
                         <div className="max-w-2xl">
                             <h1 className="text-4xl font-bold text-white mb-2">
-                                Bienvenido Andrés
+                                Bienvenido {user.nombre_completo}
                             </h1>
                             <p className="text-white/80 font-semibold">
                                 Desarrolla tus competencias del siglo 21 y haz

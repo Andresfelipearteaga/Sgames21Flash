@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import SideBar from "../components/home/sideBar";
-import { Menu } from "lucide-react";
+import { Menu } from "lucide-react"
+import useAuthCheck from "../hooks/useAuthVerify";
+import LoadingPages from "../components/common/loadingPages";
 
 const SidebarLayout = () => {
+  const { isLoading } = useAuthCheck();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(true); // Controla la visibilidad del botón de menú
   const location = useLocation();
@@ -21,7 +25,9 @@ const SidebarLayout = () => {
     }
     setSidebarOpen(state);
   };
-
+  if (isLoading) {
+    return <LoadingPages />;
+  }
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gray-900">
       {/* Sidebar con posición absoluta para desplazar el contenido */}
@@ -37,7 +43,7 @@ const SidebarLayout = () => {
         {showMenu && !sidebarOpen && (
           <button
             onClick={() => handleSidebarToggle(true)}
-            className="p-3 fixed top-4 left-4 bg-purple-600 text-white rounded-md shadow-md z-50 opacity-0 animate-fadeIn"
+            className="p-3 fixed top-4 left-4 bg-purple-600 text-white rounded-md shadow-md z-50 opacity-0 animate-fadeIn cursor-pointer"
           >
             <Menu size={24} />
           </button>

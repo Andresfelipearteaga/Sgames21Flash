@@ -1,5 +1,6 @@
 import { UserRepository } from "./user.repository";
 import { Meta } from "../../interfaces/meta.interface";
+import jwt from "jsonwebtoken";
 
 export class UserService {
   static async register(fullname: string, institution: string, username: string, password: string): Promise<Meta> {
@@ -31,10 +32,13 @@ export class UserService {
         throw new Error("Credenciales incorrectas");
       }
       console.log(user);
+      const token = jwt.sign({ id_usuario: user.id_usuario, nombre_completo: user.nombre_completo, institucion: user.institucion, nombre_usuario: user.nombre_usuario }, process.env.SECRET_KEY as string, {
+        expiresIn: "1d",
+      });
       return {
         success: true,
         message: "Login exitoso",
-        data: { id_usuario: user.id_usuario },
+        data: { token: token },
       };
     } catch (error: any) {
       throw new Error(error.message);

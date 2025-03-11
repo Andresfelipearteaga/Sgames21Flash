@@ -1,8 +1,8 @@
 import React from 'react';
 import fondoHeader from "../assets/fondoHeader.jpg";
-
+import { useUser } from '../contexts/userContext.jsx';
 const StudentProfile = () => {
-
+const { user } = useUser();
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -42,17 +42,17 @@ const StudentProfile = () => {
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-sm text-white">Nombre Completo</h3>
-                    <p className="text-lg font-semibold text-white">Andrés Arteaga Ramos</p>
+                    <p className="text-lg font-semibold text-white"> {user.nombre_completo}  </p>
                   </div>
                   
                   <div>
                     <h3 className="text-sm text-white">Nombre de Usuario</h3>
-                    <p className="text-lg font-semibold text-white">afar123</p>
+                    <p className="text-lg font-semibold text-white">{user.nombre_usuario}</p>
                   </div>
                   
                   <div>
                     <h3 className="text-sm text-white">Institución Educativa</h3>
-                    <p className="text-lg font-semibold text-white">Cecilia de Lleras</p>
+                    <p className="text-lg font-semibold text-white">{user.institucion}</p>
                   </div>
                 
                 </div>
