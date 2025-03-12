@@ -1,10 +1,26 @@
+import { useState } from "react";
 import { Menu } from "lucide-react";
 import fondoHeader from "../assets/fondoHeader.jpg";
 import Modules from "../components/home/modules";
 import { useUser } from "../contexts/userContext.jsx";
+import StartPhase from "../modals/StartPhase.jsx";
+import useGetInfoPhaseStudent from "../hooks/useGetPhaseInfo";
+import LoadingHome from "../components/common/loadingHome.jsx";
 
 const Dashboard = () => {
+    const { isLoading } = useGetInfoPhaseStudent();
+
+    const [isOpen, setIsOpen] = useState(false);
+    const openModal = (id) => {
+        console.log('openModal', id);
+        setIsOpen(true);
+
+    }
+
     const { user } = useUser();
+
+    if (isLoading) return <LoadingHome />;
+
     return (
         <div className="flex min-h-screen bg-gray-100">
             {/* Sidebar */}
@@ -29,7 +45,7 @@ const Dashboard = () => {
                     <div className="relative flex items-center px-6 h-full">
                         <div className="max-w-2xl">
                             <h1 className="text-4xl font-bold text-white mb-2">
-                                Bienvenido {user.nombre_completo}
+                                Bienvenido {user.nombre_completo.split(" ")[0]}
                             </h1>
                             <p className="text-white/80 font-semibold">
                                 Desarrolla tus competencias del siglo 21 y haz
@@ -59,13 +75,25 @@ const Dashboard = () => {
                         <div className="flex-1 border-t border-white/50"></div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <Modules title={"Identificación de hechos relevantes"} description={"Identificación de hechos relevantes"} isLocked={false} />
-                        <Modules title={"Gestión de Proyectos"} description={"Administra tus proyectos y tareas"} isLocked={true} />
-                        <Modules title={"Configuración"} description={"Personaliza las opciones del sistema"} isLocked={true} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 dashboard-area">
+                        <Modules
+                            isLocked={false}
+                            openModal={openModal}
+                        />
+                        <Modules
+                            title={"Gestión de Proyectos"}
+                            description={"Administra tus proyectos y tareas"}
+                            isLocked={true}
+                        />
+                        <Modules
+                            title={"Configuración"}
+                            description={"Personaliza las opciones del sistema"}
+                            isLocked={true}
+                        />
                     </div>
                 </main>
             </div>
+            <StartPhase onClose={() => setIsOpen(false)} isOpen={isOpen} />
         </div>
     );
 };

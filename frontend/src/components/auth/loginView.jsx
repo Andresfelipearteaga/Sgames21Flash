@@ -19,7 +19,7 @@ export const LoginView = ( { setLoginData, loginData, login, setView } ) => {
             <InputField
                 icon={User}
                 type="text"
-                placeholder="Nombre de usuario o email"
+                placeholder="Nombre de usuario"
                 value={loginData.username}
                 onChange={(e) =>
                   setLoginData((loginData) => ({ ...loginData, username: e.target.value }))

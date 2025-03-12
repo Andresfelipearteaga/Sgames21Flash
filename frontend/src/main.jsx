@@ -4,6 +4,7 @@ import './index.css'
 import App from './routes/index.routes'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import { UserProvider } from './contexts/userContext';
 
 createRoot(document.getElementById('root')).render(

@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import { checkConnection } from './config/db';
 import userRoutes from './routes/user.routes';
+import studentInfoRoutes from './routes/studentInfo.routes';
 import cookieParser from "cookie-parser";
 
 
@@ -19,6 +20,7 @@ app.use(cors( {origin: 'http://localhost:5173', credentials: true }));
 app.use(cookieParser());
 
 app.use('/api/user', userRoutes);
+app.use('/api/student-info', studentInfoRoutes);
 
 checkConnection().then(() => {
 app.listen(PORT, () => { 

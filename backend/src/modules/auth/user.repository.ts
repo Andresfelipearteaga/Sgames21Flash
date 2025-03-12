@@ -2,11 +2,21 @@ import pool from '../../config/db';
 
 export class UserRepository {
   static async registerUser(fullname: string, institution: string, username: string, password: string) {
-    const query = `INSERT INTO usuario (nombre_completo, institucion, nombre_usuario, contraseña) VALUES ($1, $2, $3, $4) RETURNING id_usuario`;
-    const values = [fullname, institution, username, password];
-
     const client = await pool.connect();
     try {
+      // Verificar si el nombre de usuario ya existe
+      const checkQuery = `SELECT nombre_usuario FROM usuario WHERE nombre_usuario = $1`;
+      const checkResult = await client.query(checkQuery, [username]);
+
+      if (checkResult.rows.length > 0) {
+        throw new Error("El nombre de usuario ya está en uso");
+      }
+
+      // Insertar el nuevo usuario
+      const query = `INSERT INTO usuario (nombre_completo, institucion, nombre_usuario, contraseña) 
+                     VALUES ($1, $2, $3, $4) RETURNING id_usuario`;
+      const values = [fullname, institution, username, password];
+
       const result = await client.query(query, values);
       return result.rows[0];
     } finally {
