@@ -77,5 +77,9 @@ export class UserController {
     }
   }
 
+  static async logOut(req: Request, res: Response) {
+    res.clearCookie("token");
+    res.status(200).json({ success: true, message: "Sesión cerrada" });
+  }
 
 }

@@ -196,6 +196,22 @@ const useAuth = () => {
             console.error('Error en register', error);        }
     };
 
+    const logOut = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/user/logout', { withCredentials: true });
+            console.log(response);
+            if (response.data.success) {
+                toast.success('Sesión cerrada');
+                navigate('/');
+            } else {
+                toast.error(response.data.message || 'Error al cerrar sesión');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || 'Error en el servidor';
+            toast.error(errorMessage);
+            console.error('Error en cerar sesion', error);
+        }}
+
     return {
         registerData,
         setRegisterData,
@@ -211,7 +227,8 @@ const useAuth = () => {
         changePassword,
         checkPassword,
         setConfirmPassword,
-        checkPasswordMatch
+        checkPasswordMatch,
+        logOut
     };
 };
 

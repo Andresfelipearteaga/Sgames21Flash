@@ -4,12 +4,15 @@ import SideBar from "../components/home/sideBar";
 import { Menu } from "lucide-react"
 import useAuthCheck from "../hooks/useAuthVerify";
 import LoadingPages from "../components/common/loadingPages";
+import LogoutModal from "../components/auth/logoutModal";
+import useAuth from "../hooks/auth";
 
 const SidebarLayout = () => {
   const { isLoading } = useAuthCheck();
-
+  const { logOut } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(true); // Controla la visibilidad del botón de menú
+  const [modalOpen, setModalOpen] = useState(false);
   const location = useLocation();
 
   // Cierra el sidebar cuando cambia la ruta
@@ -25,13 +28,17 @@ const SidebarLayout = () => {
     }
     setSidebarOpen(state);
   };
+  const handleLogout = () => {
+    setModalOpen(false);
+    logOut();
+  };
   if (isLoading) {
     return <LoadingPages />;
   }
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gray-900">
       {/* Sidebar con posición absoluta para desplazar el contenido */}
-      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={handleSidebarToggle} />
+      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={handleSidebarToggle} logOuthandler={() => setModalOpen(true)} />
 
       {/* Contenido principal con margen dinámico */}
       <div
@@ -54,6 +61,8 @@ const SidebarLayout = () => {
           <Outlet />
         </div>
       </div>
+      <LogoutModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onConfirm={handleLogout} />
+
     </div>
   );
 };
