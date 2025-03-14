@@ -72,7 +72,7 @@ const SidebarInfo = ({ SelectedKey, agentEvent }) => {
         className="w-5 h-5 text-white ml-2 cursor-pointer"
         data-tooltip-id="info-tooltip"
       />
-      <Tooltip id="info-tooltip" place="top" effect="solid">
+      <Tooltip id="info-tooltip" place="top" effect="solid" className='z-100'>
         Haz click en cada opción para decirle a tu agente que te explique cada tipo de {SelectedKey}
       </Tooltip>
         </>

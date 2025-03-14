@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
 import Confetti from 'react-confetti';
-import { useP1Context } from '../../../contexts/p1Context';
 
-const InteractiveComponent = ( {initCheckList} ) => {
-  const { setStage } = useP1Context();
+const InteractiveComponent = ( { updateStage} ) => {
   const [showCelebration, setShowCelebration] = useState(false);
   const [countdown, setCountdown] = useState(null);
 
@@ -30,9 +28,7 @@ const InteractiveComponent = ( {initCheckList} ) => {
   }, [countdown]);
 
   const handleEvent = () => {
-    initCheckList('startad_p1')
-    setStage('CheckInicial');
-
+    updateStage(2)
   };
 
   return (

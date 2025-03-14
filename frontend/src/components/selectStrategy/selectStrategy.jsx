@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-const StudyStrategyPlanner = ({SelectedKey} ) => {
+const StudyStrategyPlanner = ({SelectedKey, initCheckInicial} ) => {
   const [openSection, setOpenSection] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
 
+  useEffect(() => {
+    initCheckInicial('startad_p1');
+  }, []);
 
 
   const sections = [
@@ -45,6 +48,8 @@ const StudyStrategyPlanner = ({SelectedKey} ) => {
   const handleSelectOption = (sectionIndex, option) => {
     setSelectedOptions({ ...selectedOptions, [sectionIndex]: option });
   };
+
+
 
   return (
     <div className="max-w-4xl mx-auto p-6">

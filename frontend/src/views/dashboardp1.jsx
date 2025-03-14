@@ -16,6 +16,7 @@ import BeforeStart from "../components/p1/before/start";
 import { Bot } from "lucide-react";
 import useGetPhaseStudent from "../hooks/useGetStage";
 import useAgentMessage from "../hooks/useAgentMessage";
+import useUpdatePhaseStudent from "../hooks/useUpdateStage.js";
 import { useEffect, useState } from "react";
 
 const Dashboard = () => {
@@ -31,11 +32,19 @@ const Dashboard = () => {
     setIsFullScreenVisible,
   } = useP1Context();
 
-  const { isLoadingAgent, message, fetchAgentMessage } = useAgentMessage();
+  const { message, fetchAgentMessage } = useAgentMessage();
+  const { getStageUser, isLoadingGetStage } = useUpdatePhaseStudent()
+  const [ LocalStage, setLocalStage ] = useState('Introduccion')
   useEffect(() => {
     // Simulación de carga progresiva
     setProgress(10);
   }, []);
+
+  useEffect(() =>  {
+    console.log('newStage', stage)
+    setLocalStage(stage)
+    
+}, [stage])
 
   const selectedKey = (key) => {
     setKeyConcept(key);
@@ -47,6 +56,7 @@ const Dashboard = () => {
   };
 
   if (isLoading) return <LoadingPages />;
+  if (isLoadingGetStage) return <LoadingPages />
 
   return (
     <div
@@ -89,21 +99,21 @@ const Dashboard = () => {
           )}
 
           {/* Renderizar el componente correspondiente a la etapa */}
-          {stage === "Introducción" && isFullScreenVisible
+          {LocalStage === "Introducción" && isFullScreenVisible
             ? (
               <Introduction
                 startAgentMessage={fetchAgentMessage}
                 onClose={() => setIsFullScreenVisible(false)}
               />
             )
-            : stage === "Introducción" && !isFullScreenVisible
-            ? <BeforeStart initCheckList={fetchAgentMessage} />
+            : LocalStage === "Introducción" && !isFullScreenVisible
+            ? <BeforeStart updateStage={getStageUser} />
             : null}{" "}
-          {stage === "CheckInicial" && (
-            <SelectStrategy SelectedKey={selectedKey} />
+          {LocalStage === "CheckInicial" && (
+            <SelectStrategy SelectedKey={selectedKey} initCheckInicial={fetchAgentMessage} />
           )}
-          {stage === "CheckFinal" && <FinalChecklist />}
-          {stage === "Actividad" && <BeforeStart />}
+          {LocalStage === "CheckFinal" && <FinalChecklist />}
+          {LocalStage === "Actividad" && <BeforeStart />}
         </div>
         <div className="bg-gray-900 col-span-1 row-span-7 rounded-lg flex items-center justify-center flex-col">
           <ProgressBar progress={progress} />

@@ -31,7 +31,7 @@ const Responses = ( {fullMessage} ) => {
           setIsTyping(false);
           setIsAgentTalking(false);
         }
-      }, 30);
+      }, 20);
 
       return () => clearInterval(interval);
     }
