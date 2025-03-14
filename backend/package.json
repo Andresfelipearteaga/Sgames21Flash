@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.13.3",
+    "react-confetti": "^6.4.0",
     "react-router-dom": "^7.3.0"
   },
   "devDependencies": {

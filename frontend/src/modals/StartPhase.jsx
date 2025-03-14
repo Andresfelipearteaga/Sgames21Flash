@@ -1,7 +1,9 @@
 import { useUser } from "../contexts/userContext.jsx";
 import { CheckCircle } from "lucide-react";
 import forest from "../assets/forest.jpg";
+import { useNavigate } from "react-router-dom";
 const Modal = ({ isOpen, onClose }) => {
+    const navigate = useNavigate();
     const { userDataPhase } = useUser();
     if (!isOpen) return null;
 
@@ -66,7 +68,12 @@ const Modal = ({ isOpen, onClose }) => {
                         >
                             Cancelar
                         </button>
-                        <button className="px-5 py-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 transition-colors duration-300 cursor-pointer">
+                        <button className="px-5 py-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 transition-colors duration-300 cursor-pointer"
+                            onClick={() => {
+                                onClose();
+                                navigate('/app/fase1');
+                            }}
+                        >
                             Iniciar
                         </button>
                     </div>

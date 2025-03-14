@@ -1,4 +1,3 @@
-import bgVideo from "../../assets/videoAgente.mp4"; // Importa el video
 import agent1 from "../../assets/4x/agent.png"
 import agent2 from "../../assets/4x/agent2.png"
 import agent3 from "../../assets/4x/agent3.png"
@@ -26,17 +25,6 @@ const Agent = ( {isTalking} ) => {
 
   return (
     <div className="relative w-full h-full overflow-hidden rounded-lg flex items-center justify-center">
-      {/* Video de fondo */}
-      {/* <video 
-        autoPlay 
-        loop 
-        muted 
-        playsInline 
-        className="absolute top-0 left-0 w-full h-full object-cover"
-      >
-        <source src={bgVideo} type="video/mp4" />
-        Tu navegador no soporta el video.
-      </video> */}
 
       {/* Imagen del muñeco */}
       <img 

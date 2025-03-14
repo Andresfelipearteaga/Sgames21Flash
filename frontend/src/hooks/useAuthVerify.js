@@ -16,6 +16,7 @@ const useAuthCheck = () => {
        console.log(response);
         setIsLoading(false); // Token válido, permitir el acceso
         setUser(response.data.data);
+        window.localStorage.setItem("id_usuario", response.data.data.id_usuario);
       } catch (error) {
         console.error("Error al verificar el token", error);
         navigate("/"); // Redirigir si es 401

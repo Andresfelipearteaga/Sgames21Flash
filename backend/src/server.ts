@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import { checkConnection } from './config/db';
 import userRoutes from './routes/user.routes';
 import studentInfoRoutes from './routes/studentInfo.routes';
+import agentRoutes from './routes/agent.routes';
+import phaseOneRoutes from './routes/phase_1.routes';
 import cookieParser from "cookie-parser";
 
 
@@ -21,6 +23,8 @@ app.use(cookieParser());
 
 app.use('/api/user', userRoutes);
 app.use('/api/student-info', studentInfoRoutes);
+app.use('/api/agent', agentRoutes);
+app.use('/api/phase-one', phaseOneRoutes);
 
 checkConnection().then(() => {
 app.listen(PORT, () => { 
