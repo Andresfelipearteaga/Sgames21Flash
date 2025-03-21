@@ -39,11 +39,24 @@ const StudyStrategyPlanner = ({SelectedKey, initCheckInicial} ) => {
   ];
 
   const toggleSection = (index, sectionKey) => {
+    console.log('sectionKey', sectionKey);
+    
     const isOpen = openSection === index;
+
+    // Solo ejecutar si se está abriendo la sección
+    if (!isOpen) {
+        if (sectionKey === 'Herramientas') {
+            initCheckInicial('select_tool_p1');
+        } else if (sectionKey === 'Organización') {
+            initCheckInicial('select_organizer_p1');
+        } else if (sectionKey === 'Estrategias') {
+            initCheckInicial('select_strategy_p1');
+        }
+    }
+
     setOpenSection(isOpen ? null : index);
     SelectedKey(isOpen ? null : sectionKey);
-
-  };
+};
 
   const handleSelectOption = (sectionIndex, option) => {
     setSelectedOptions({ ...selectedOptions, [sectionIndex]: option });

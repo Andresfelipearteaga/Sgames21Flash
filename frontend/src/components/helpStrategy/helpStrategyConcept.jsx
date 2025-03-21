@@ -3,9 +3,22 @@ import { BookOpen, Table, Tags, FileText, Lock, Info } from 'lucide-react';  // 
 import { Tooltip } from 'react-tooltip';
 const SidebarInfo = ({ SelectedKey, agentEvent }) => {
     const handleItemClick = (key) => {
-      console.log(key);
-      agentEvent(key)
+      if (key === 'Lectura Crítica y Subrayado') {
+        agentEvent('strategy1_p1_concept');
+      } else if (key === 'Búsqueda de Palabras Clave') {
+        agentEvent('strategy2_p1_concept');
+      } else if (key === 'Mapas Conceptuales') {
+        agentEvent('organizer1_p1_concept');
+      } else if (key === 'Uso de Tablas') {
+        agentEvent('organizer2_p1_concept');
+      } else if (key === 'Cuadro de Notas') {
+        agentEvent('tool1_p1_concept');
+      } else if (key === 'Sistema de Etiquetado') {
+        agentEvent('tool2_p1_concept');
+      }
     };
+
+       
   const renderContent = () => {
     if (SelectedKey === null) {
       return (
@@ -42,7 +55,7 @@ const SidebarInfo = ({ SelectedKey, agentEvent }) => {
         return (
           <div className="space-y-3">
             {renderClickableItem( <Table className="w-6 h-6" />, "Mapas Conceptuales")}
-            {renderClickableItem( <Table className="w-6 h-6" />, "Uso de Tablas y Gráficos")}
+            {renderClickableItem( <Table className="w-6 h-6" />, "Uso de Tablas")}
           </div>
         );
 

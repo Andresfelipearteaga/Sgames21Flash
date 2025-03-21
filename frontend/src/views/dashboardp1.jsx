@@ -18,6 +18,7 @@ import useGetPhaseStudent from "../hooks/useGetStage";
 import useAgentMessage from "../hooks/useAgentMessage";
 import useUpdatePhaseStudent from "../hooks/useUpdateStage.js";
 import { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 const Dashboard = () => {
   const [keyConcept, setKeyConcept] = useState(null);
@@ -33,30 +34,24 @@ const Dashboard = () => {
   } = useP1Context();
 
   const { message, fetchAgentMessage } = useAgentMessage();
-  const { getStageUser, isLoadingGetStage } = useUpdatePhaseStudent()
-  const [ LocalStage, setLocalStage ] = useState('Introduccion')
+  const { getStageUser, isLoadingGetStage } = useUpdatePhaseStudent();
+  const [LocalStage, setLocalStage] = useState("Introduccion");
   useEffect(() => {
     // Simulación de carga progresiva
     setProgress(10);
   }, []);
 
-  useEffect(() =>  {
-    console.log('newStage', stage)
-    setLocalStage(stage)
-    
-}, [stage])
+  useEffect(() => {
+    console.log("newStage", stage);
+    setLocalStage(stage);
+  }, [stage]);
 
   const selectedKey = (key) => {
     setKeyConcept(key);
   };
-  // Función para iniciar/detener la animación de hablar
-  const agentEvent = (key) => {
-    console.log(key);
-    setIsAgentTalking((prev) => !prev);
-  };
 
   if (isLoading) return <LoadingPages />;
-  if (isLoadingGetStage) return <LoadingPages />
+  if (isLoadingGetStage) return <LoadingPages />;
 
   return (
     <div
@@ -83,7 +78,7 @@ const Dashboard = () => {
         <div className="bg-gray-900 col-span-3 row-span-7 rounded-lg">
           <HelpStrategyConcept
             SelectedKey={keyConcept}
-            agentEvent={agentEvent}
+            agentEvent={fetchAgentMessage}
           />
         </div>
         <div className="bg-gray-900 col-span-10 row-span-7 rounded-lg relative">
@@ -110,10 +105,16 @@ const Dashboard = () => {
             ? <BeforeStart updateStage={getStageUser} />
             : null}{" "}
           {LocalStage === "CheckInicial" && (
-            <SelectStrategy SelectedKey={selectedKey} initCheckInicial={fetchAgentMessage} />
+            <SelectStrategy
+              SelectedKey={selectedKey}
+              initCheckInicial={fetchAgentMessage}
+            />
           )}
           {LocalStage === "CheckFinal" && <FinalChecklist />}
           {LocalStage === "Actividad" && <BeforeStart />}
+          <button className="absolute top-2 right-2 bg-purple-600 text-white p-2 rounded-full shadow-lg hover:bg-purple-700 transition duration-300">
+            <ArrowRight size={24} />
+          </button>
         </div>
         <div className="bg-gray-900 col-span-1 row-span-7 rounded-lg flex items-center justify-center flex-col">
           <ProgressBar progress={progress} />
