@@ -5,5 +5,6 @@ const router = Router();
 
 router.get("/:id", AntesDeController.getMessage);
 router.put("/updatePhase", AntesDeController.updatedStage)
+router.put("/updatedStrategy", AntesDeController.updatedStrategy)
 
 export default router;

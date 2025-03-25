@@ -8,6 +8,7 @@ export const AppProvider = ({ children }) => {
   const [progress, setProgress] = useState(0);
   const [stage, setStage] = useState('Introduccion');
 
+
   return (
     <p1Context.Provider
       value={{

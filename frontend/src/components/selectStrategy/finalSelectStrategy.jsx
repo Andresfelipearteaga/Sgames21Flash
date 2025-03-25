@@ -1,18 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const AnimatedChecklist = () => {
+const AnimatedChecklist = ({ initFinalCheck, next }) => {
   const [checkedItems, setCheckedItems] = useState({
     'estrategias': false,
     'organizar': false,
     'herramientas': false
   });
 
+  const agentMessageItem = {
+    'estrategias': 'strategy_selected',
+    'organizar': 'organizer_selected',
+    'herramientas': 'tool_selected'
+  }
+
   const handleCheck = (item) => {
-    setCheckedItems(prev => ({
-      ...prev,
-      [item]: !prev[item]
-    }));
+    setCheckedItems(prev => {
+      const updated = {
+        ...prev,
+        [item]: !prev[item]
+      };
+  
+      // Obtener el mensaje relacionado con el ítem
+      const mensaje = agentMessageItem[item];
+  
+      // Ejecutar función pasando el mensaje
+      initFinalCheck(mensaje);
+  
+      return updated;
+    });
   };
+
+   // ✅ Revisar si todos están en true y llamar a next()
+   useEffect(() => {
+    const allChecked = Object.values(checkedItems).every(Boolean);
+    if (allChecked && next) {
+      next(4);
+    }
+  }, [checkedItems, next]);
+  
+
+  useEffect(() => {
+    initFinalCheck('verified_select_p1')
+  }, [])
   
   // Efecto de chispas
   const Sparkles = ({ visible }) => {

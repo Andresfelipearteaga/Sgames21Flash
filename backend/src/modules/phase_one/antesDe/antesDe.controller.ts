@@ -22,4 +22,15 @@ export class AntesDeController {
 
   }
 }
+
+static async updatedStrategy(req: Request, res: Response) {
+  const { id, strategy, organizer, tool } = req.body;
+  console.log(id, strategy, organizer, tool)
+  try {
+    const response = await AntesDeService.updatedStrategyStudent(id, strategy, organizer, tool)
+    res.status(201).json(response)
+}  catch (error: any) {
+  res.status(400).json({ success: false, message: error.message });
+}
+}
 }

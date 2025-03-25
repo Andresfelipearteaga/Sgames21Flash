@@ -22,10 +22,10 @@ import { ArrowRight } from "lucide-react";
 
 const Dashboard = () => {
   const [keyConcept, setKeyConcept] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const { isLoading } = useGetPhaseStudent();
   const {
     isAgentTalking,
-    setIsAgentTalking,
     progress,
     setProgress,
     stage,
@@ -35,6 +35,7 @@ const Dashboard = () => {
 
   const { message, fetchAgentMessage } = useAgentMessage();
   const { getStageUser, isLoadingGetStage } = useUpdatePhaseStudent();
+  const [NewStageNumber, setNewStageNumber] = useState(0);
   const [LocalStage, setLocalStage] = useState("Introduccion");
   useEffect(() => {
     // Simulación de carga progresiva
@@ -50,8 +51,27 @@ const Dashboard = () => {
     setKeyConcept(key);
   };
 
+  useEffect(() => {
+    console.log('stage', NewStageNumber)
+  }, [NewStageNumber])
+
+  const next = (stage) => {
+    setIsButtonDisabled(false);
+    setNewStageNumber(stage);
+  };
+
+  const nexStage = () => {
+    setIsButtonDisabled(true)
+    console.log('stage', NewStageNumber)
+    const newStage = NewStageNumber === 3 ? 'CheckFinal' : 'Actividad'
+    console.log('newStage', newStage)
+    setLocalStage(newStage)
+    getStageUser(NewStageNumber)
+  }
+
   if (isLoading) return <LoadingPages />;
   if (isLoadingGetStage) return <LoadingPages />;
+  
 
   return (
     <div
@@ -108,11 +128,15 @@ const Dashboard = () => {
             <SelectStrategy
               SelectedKey={selectedKey}
               initCheckInicial={fetchAgentMessage}
+              next={next}
             />
           )}
-          {LocalStage === "CheckFinal" && <FinalChecklist />}
-          {LocalStage === "Actividad" && <BeforeStart />}
-          <button className="absolute top-2 right-2 bg-purple-600 text-white p-2 rounded-full shadow-lg hover:bg-purple-700 transition duration-300">
+          {LocalStage === "CheckFinal" && <FinalChecklist initFinalCheck={fetchAgentMessage} next={next} />}
+          {LocalStage === "Actividad" && <div>Actividad</div>}
+          <button className="absolute bottom-2 right-2 bg-purple-600 text-white p-2 rounded-full shadow-lg hover:bg-purple-700 transition duration-300 disabled:bg-gray-600 enabled:cursor-pointer"
+          disabled={isButtonDisabled}
+          onClick={nexStage}
+          >
             <ArrowRight size={24} />
           </button>
         </div>

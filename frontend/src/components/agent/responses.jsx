@@ -7,23 +7,20 @@ const Responses = ( {fullMessage} ) => {
   const [isTyping, setIsTyping] = useState(true);
   const { setIsAgentTalking } = useP1Context();
   const { user } = useUser();
-  console.log(user.nombre_completo);
   const processedMessage = fullMessage
   ? fullMessage.replace("{nombre_usuario}", user?.nombre_completo || "Usuario")
   : "";
 
-  
-  console.log(fullMessage);
-  
+    
   useEffect(() => {
     if (processedMessage) {
-      setText(""); // Reinicia el texto cuando llega un nuevo mensaje
+      setText("...");
       setIsTyping(true);
       setIsAgentTalking(true);
 
       let index = 0;
       const interval = setInterval(() => {
-        setText((prev) => prev + processedMessage.charAt(index)); // Usamos charAt() para asegurar que toma bien la letra
+        setText((prev) => prev + processedMessage.charAt(index));
         index++;
 
         if (index === processedMessage.length) {
@@ -31,11 +28,11 @@ const Responses = ( {fullMessage} ) => {
           setIsTyping(false);
           setIsAgentTalking(false);
         }
-      }, 20);
+      }, 5);
 
       return () => clearInterval(interval);
     }
-  }, [processedMessage]); // Depende
+  }, [processedMessage]);
   
   return (
     <div className="w-full h-full flex items-center">

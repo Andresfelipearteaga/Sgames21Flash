@@ -7,7 +7,7 @@ const InteractiveComponent = ( { updateStage} ) => {
   const [countdown, setCountdown] = useState(null);
 
   const handleStart = () => {
-    setCountdown(8); // Inicia el contador en 5
+    setCountdown(5); // Inicia el contador en 5
     setShowCelebration(true);
 
   };

@@ -1,4 +1,5 @@
 import { UserRepository } from "./user.repository";
+import { AntesDeRepository } from "../phase_one/antesDe/antesDe.repository";
 import { Meta } from "../../interfaces/meta.interface";
 import jwt from "jsonwebtoken";
 
@@ -11,6 +12,11 @@ export class UserService {
 
     try {
       const newUser = await UserRepository.registerUser(fullname, institution, username, password);
+      console.log(newUser, 'newUser')
+      await AntesDeRepository.createInfoStageStudent(newUser.id_usuario);
+      await AntesDeRepository.createStrategyStudent(newUser.id_usuario);
+      await AntesDeRepository.createInfoPhaseStudent(newUser.id_usuario, 'Fase 1 - Análisis de la información', 'Identificación de hechos relevantes', 'Identificación de opiniones y argumentos', 'Se analizan los datos disponibles para distinguir entre hechos objetivos y opiniones', 0);
+
       return {
         success: true,
         message: "Usuario registrado correctamente",
