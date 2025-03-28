@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import Typewriter from "typewriter-effect";
 
 const personajes = [
     {
@@ -66,27 +67,22 @@ const personajes = [
 ];
 
 const TypingText = ({ text, onFinish }) => {
-    const [displayedText, setDisplayedText] = useState("");
-    const intervalRef = useRef(null);
-
-    useEffect(() => {
-        setDisplayedText("");
-        let index = 0;
-        intervalRef.current = setInterval(() => {
-            setDisplayedText((prev) => prev + text.charAt(index));
-            index++;
-            if (index >= text.length) {
-                clearInterval(intervalRef.current);
-                if (onFinish) onFinish();
-            }
-        }, 40);
-
-        return () => clearInterval(intervalRef.current);
-    }, [text, onFinish]);
-
     return (
         <p className="text-lg text-gray-700 whitespace-pre-line">
-            {displayedText}
+            <Typewriter
+                options={{
+                    delay: 40,
+                    cursor: "",
+                }}
+                onInit={(typewriter) => {
+                    typewriter
+                        .typeString(text)
+                        .callFunction(() => {
+                            if (onFinish) onFinish();
+                        })
+                        .start();
+                }}
+            />
         </p>
     );
 };
@@ -99,8 +95,13 @@ export default function ActorSelector() {
 
     const manejarSeleccion = (actor) => {
         if (bloqueado || actor.id === lastActorId) return;
+
         setBloqueado(true);
-        setTextoActual(actor.texto);
+        setTextoActual(""); // 🔹 Resetea antes de asignar el nuevo texto
+        setTimeout(() => {
+            setTextoActual(actor.texto);
+        }, 50); // 🔹 Pequeña pausa para reiniciar el efecto
+
         setActorSeleccionado(actor);
         setLastActorId(actor.id);
     };
@@ -138,6 +139,7 @@ export default function ActorSelector() {
                                     {actorSeleccionado.nombre}
                                 </h2>
                                 <TypingText
+                                    key={textoActual}
                                     text={textoActual}
                                     onFinish={() => setBloqueado(false)}
                                     className="text-slate-600 text-lg max-w-md mx-auto leading-relaxed"

@@ -23,6 +23,8 @@ import  Activity  from "../components/p1/activity/texts.jsx";
 import WordAssignment from "../components/p1/activity/WordAssignment.jsx";
 // import HighlightText from "../components/p1/activity/highlighttext.jsx";
 import ActorSelector from "../components/p1/activity/actorSelector.jsx";
+// import TableTestimonies from "../components/p1/activity/tableTestimonies.jsx";
+import JoinLine from "../components/p1/activity/JoinLine.jsx";
 
 const Dashboard = () => {
   const [keyConcept, setKeyConcept] = useState(null);
@@ -140,7 +142,7 @@ const Dashboard = () => {
           // <Activity title={'Texto Primera Actividad'} text={'Manuel cada vez se daba cuenta de como los tiempos cambiaron. Las motosierras rugían, los árboles caían y el verde desaparecía. Los ganaderos expandían potreros sin límite, los agricultores talaban para sembrar a gran escala, y los madereros explotaban los árboles centenarios. Inversionistas y grandes empresas compraban tierras para proyectos urbanísticos y comerciales, destruyendo más bosque.Manuel recorrió el bosque. Los ríos eran hilos de agua, la tierra estaba seca y los animales huían. Recordó las palabras de su abuelo: "Sin árboles, no hay vida."Sabía que debía hacer algo antes de que todo desapareciera.'} />
           // <WordAssignment />
           // <HighlightText />
-          <ActorSelector />
+          <JoinLine />
 
           }
 
